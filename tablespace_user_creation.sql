@@ -23,15 +23,15 @@ TEMPORARY TABLESPACE SQL3_TempTBS
 QUOTA UNLIMITED ON SQL3_TBS;
 
 -- 5. Attribution des privilèges
-GRANT CONNECT, RESOURCE TO SQL3;
-GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, 
-CREATE CREATE PROCEDURE, CREATE TRIGGER,
-GRANT UNLIMITED TABLESPACE TO SQL3;
+GRANT ALL PRIVILEGES TO SQL3  WITH ADMIN OPTION;
 
 
--- verifification
+-- Verification
 SELECT username, default_tablespace, temporary_tablespace
 FROM dba_users WHERE username = 'SQL3';
 
 SELECT tablespace_name, status, contents 
 FROM dba_tablespaces;
+
+SELECT * FROM dba_sys_privs WHERE grantee = 'SQL3';
+
