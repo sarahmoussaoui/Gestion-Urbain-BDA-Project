@@ -64,7 +64,7 @@ def fade_in_label(widget, text, i=0):
 
 # --- Main Tkinter setup ---
 root = tk.Tk()
-root.title("Application SQL Moderne")
+root.title("Application Gestion Urbain")
 root.geometry("900x700")
 root.configure(bg="#f7f9fb")
 
