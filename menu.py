@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import oracledb
+from PIL import Image, ImageTk
 
 # --- Oracle connection setup ---
 oracledb.init_oracle_client()
@@ -69,7 +70,7 @@ root.configure(bg="#f7f9fb")
 
 # Optional: Add icon
 try:
-    root.iconbitmap("icon.ico")
+    root.iconbitmap("images/icon.ico")
 except:
     pass
 
@@ -77,13 +78,17 @@ except:
 style = ttk.Style()
 style.theme_use("clam")  # default theme
 
-# Logo
+# Logo (resized with Pillow)
 try:
-    logo_img = tk.PhotoImage(file="logo.png")
+    original_logo = Image.open("images/logo.png")
+    resized_logo = original_logo.resize((120, 120))  # Set your desired size (width, height)
+    logo_img = ImageTk.PhotoImage(resized_logo)
     logo_label = tk.Label(root, image=logo_img, bg="#f7f9fb")
+    logo_label.image = logo_img  # Keep a reference to avoid garbage collection
     logo_label.pack(pady=10)
-except:
-    pass
+except Exception as e:
+    print("Erreur chargement logo:", e)
+
 
 # Fancy title animation
 fade_label = ttk.Label(root, text="", font=("Segoe UI", 14, "bold"))
