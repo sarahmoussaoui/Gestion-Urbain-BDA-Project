@@ -21,13 +21,13 @@ def run_selected_query():
     selected = combo.get()
     query = None
 
-    if selected == "1 - Voyages avec incidents":
+    if selected == "Voyages avec incidents":
         query = "SELECT * FROM vw_voyages_incidents"
-    elif selected == "2 - Lignes avec station principale":
+    elif selected == "Lignes avec station principale":
         query = "SELECT * FROM vw_lignes_station_principale"
-    elif selected == "3 - Navette la plus active":
+    elif selected == "Navette la plus active":
         query = "SELECT * FROM vw_navette_plus_active"
-    elif selected == "4 - Stations avec ≥ 2 moyens":
+    elif selected == "Stations avec ≥ 2 moyens":
         query = "SELECT * FROM vw_station_principale_moyens"
     else:
         messagebox.showwarning("Avertissement", "Choix invalide.")
@@ -94,10 +94,10 @@ fade_in_label(fade_label, "Bienvenue dans l'application Gestion Urbain!")
 tk.Label(root, text="Sélectionnez une requête :", font=("Segoe UI", 11), bg="#f7f9fb").pack(pady=(10, 0))
 
 combo = ttk.Combobox(root, width=40, values=[
-    "1 - Voyages avec incidents",
-    "2 - Lignes avec station principale",
-    "3 - Navette la plus active",
-    "4 - Stations avec ≥ 2 moyens"
+    "Voyages avec incidents",
+    "Lignes avec station principale",
+    "Navette la plus active",
+    "Stations avec ≥ 2 moyens"
 ])
 combo.pack(pady=5)
 combo.current(0)
