@@ -36,6 +36,7 @@ INSERT ALL
     )
   )
 SELECT * FROM dual; -- meaning run those four inserts one time each
+COMMIT;
 
 -- insertion des stations
 -- Station Principale 1
@@ -48,6 +49,7 @@ INSERT INTO StationTab VALUES (
         )
     )
 );
+COMMIT;
 
 -- Station Principale 2
 INSERT INTO StationTab VALUES (
@@ -59,6 +61,7 @@ INSERT INTO StationTab VALUES (
         )
     )
 );
+COMMIT;
 
 -- Station Principale 3
 INSERT INTO StationTab VALUES (
@@ -70,6 +73,7 @@ INSERT INTO StationTab VALUES (
         )
     )
 );
+COMMIT;
 
 -- Station Principale 4
 INSERT INTO StationTab VALUES (
@@ -81,6 +85,7 @@ INSERT INTO StationTab VALUES (
         )
     )
 );
+COMMIT;
 
 
 
@@ -91,6 +96,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'M')
     )
 );
+COMMIT;
 
 -- Station Secondaire 2
 INSERT INTO StationTab VALUES (
@@ -99,6 +105,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'TR')
     )
 );
+COMMIT;
 
 -- Station Secondaire 3
 INSERT INTO StationTab VALUES (
@@ -107,6 +114,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'TR')
     )
 );
+COMMIT;
 
 -- Station Secondaire 4
 INSERT INTO StationTab VALUES (
@@ -115,6 +123,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'B')
     )
 );
+COMMIT;
 
 -- Station Secondaire 5
 INSERT INTO StationTab VALUES (
@@ -123,6 +132,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'B')
     )
 );
+COMMIT;
 
 -- Station Secondaire 6
 INSERT INTO StationTab VALUES (
@@ -131,6 +141,7 @@ INSERT INTO StationTab VALUES (
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'TN')
     )
 );
+COMMIT;
 
 
 
@@ -147,6 +158,7 @@ INSERT INTO LigneTab VALUES(
         NULL   -- Liste des tronçons
     )
 );
+COMMIT;
 
 
 -- Insertion de la ligne de métro
@@ -160,6 +172,7 @@ INSERT INTO LigneTab VALUES(
         NULL   -- Liste des tronçons
     )
 );
+COMMIT;
 
 -- Insertion de la ligne de tramway
 INSERT INTO LigneTab VALUES( 
@@ -172,6 +185,7 @@ INSERT INTO LigneTab VALUES(
         NULL   -- Liste des tronçons
     )
 );
+COMMIT;
 
 -- Insertion de la ligne de train
 INSERT INTO LigneTab VALUES( 
@@ -184,6 +198,7 @@ INSERT INTO LigneTab VALUES(
         NULL   -- Liste des tronçons
     )
 );
+COMMIT;
 
 -- insertion des tronçons
 -- Tronçons pour le Métro
@@ -196,6 +211,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 INSERT INTO TronconTab VALUES (
     TronconType(102,
@@ -206,6 +222,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 INSERT INTO TronconTab VALUES (
     TronconType(103,
@@ -216,6 +233,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 -- Tronçons pour le Tramway
 INSERT INTO TronconTab VALUES (
@@ -227,6 +245,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 INSERT INTO TronconTab VALUES (
     TronconType(202,
@@ -237,6 +256,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 -- Tronçons pour le Bus
 INSERT INTO TronconTab VALUES (
@@ -248,6 +268,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 INSERT INTO TronconTab VALUES (
     TronconType(302,
@@ -258,6 +279,7 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 -- Tronçons pour le Train
 INSERT INTO TronconTab VALUES (
@@ -269,24 +291,30 @@ INSERT INTO TronconTab VALUES (
         NULL
     )
 );
+COMMIT;
 
 
 -- Insertion des navettes pour les lignes
 -- Insertion des navettes pour la ligne B001
 INSERT INTO NavetteTab VALUES ('N001', 'Volvo', 2020, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'B001'), NULL);
-
+COMMIT;
 INSERT INTO NavetteTab VALUES ('N002', 'Mercedes', 2021, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'B001'), NULL);
-
+COMMIT;
 -- Insertion des navettes pour la ligne M001
 INSERT INTO NavetteTab VALUES ('N003', 'Scania', 2019, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'M001'), NULL);
+COMMIT;
 INSERT INTO NavetteTab VALUES ('N004', 'Renault', 2022, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'M001'), NULL);
+COMMIT;
 -- Insertion des navettes pour la ligne TR001
 INSERT INTO NavetteTab VALUES ('N005', 'Alstom', 2020, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TR001'), NULL);
+COMMIT;
 INSERT INTO NavetteTab VALUES ('N006', 'Bombardier', 2021, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TR001'), NULL);
+COMMIT;
 -- Insertion des navettes pour la ligne TN001
 INSERT INTO NavetteTab VALUES ('N007', 'Siemens', 2020, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TN001'), NULL);
+COMMIT;
 INSERT INTO NavetteTab VALUES ('N008', 'CAF', 2021, (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TN001'), NULL);
-
+COMMIT;
 
 -- Insertion des voyages pour les navettes
 -- Insertion du voyage V0001
@@ -300,7 +328,7 @@ INSERT INTO VoyageTab VALUES (
     'Panne', 
     (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N001')
 );
-
+COMMIT;
 -- Insertion du voyage V0002
 INSERT INTO VoyageTab VALUES (
     'V0002', 
@@ -312,7 +340,7 @@ INSERT INTO VoyageTab VALUES (
     'On Time', 
     (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N001')
 );
-
+COMMIT;
 -- Insertion du voyage V0003
 INSERT INTO VoyageTab VALUES (
     'V0003', 
@@ -324,7 +352,7 @@ INSERT INTO VoyageTab VALUES (
     'Arrivé', 
     (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N003')
 );
-
+COMMIT;
 -- Insertion du voyage V0004
 INSERT INTO VoyageTab VALUES (
     'V0004', 
@@ -336,47 +364,47 @@ INSERT INTO VoyageTab VALUES (
     'RAS', 
     (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N003')
 );
-
+COMMIT;
 -- Nouveau voyage 1
 INSERT INTO VoyageTab VALUES
 ('V0005', TO_DATE('2025-01-03 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-03 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Aller', 40, 'Panne', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N002'));
-
+COMMIT;
 -- Nouveau voyage 2
 INSERT INTO VoyageTab VALUES
 ('V0006', TO_DATE('2025-01-03 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-03 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Retour', 35, 'Retard', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N003'));
-
+COMMIT;
 -- Nouveau voyage 3
 INSERT INTO VoyageTab VALUES
 ('V0007', TO_DATE('2025-01-04 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-04 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'Aller', 45, 'A lheure', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N004'));
-
+COMMIT;
 -- Nouveau voyage 4
 INSERT INTO VoyageTab VALUES
 ('V0008', TO_DATE('2025-01-04 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-04 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'Retour', 40, 'RAS', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N005'));
-
+COMMIT;
 -- Nouveau voyage 5
 INSERT INTO VoyageTab VALUES
 ('V0009', TO_DATE('2025-01-05 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-05 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Aller', 50, 'Accident', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N006'));
-
+COMMIT;
 -- Nouveau voyage 6
 INSERT INTO VoyageTab VALUES
 ('V0010', TO_DATE('2025-01-05 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-05 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Retour', 60, 'Retard', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N007'));
-
+COMMIT;
 -- Nouveau voyage 7
 INSERT INTO VoyageTab VALUES
 ('V0011', TO_DATE('2025-01-06 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-06 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'Aller', 55, 'Panne', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N008'));
-
+COMMIT;
 -- Nouveau voyage 8
 INSERT INTO VoyageTab VALUES
 ('V0012', TO_DATE('2025-01-06 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-06 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'Retour', 70, 'A lheure', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N001'));
-
+COMMIT;
 -- Nouveau voyage 9
 INSERT INTO VoyageTab VALUES
 ('V0013', TO_DATE('2025-01-07 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-07 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Aller', 60, 'Retard', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N002'));
-
+COMMIT;
 -- Nouveau voyage 10
 INSERT INTO VoyageTab VALUES
 ('V0014', TO_DATE('2025-01-07 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 30, TO_DATE('2025-01-07 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Retour', 50, 'Accident', (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N003'));
-
+COMMIT;
 -- updates of table ligne : because of station codes
 UPDATE LigneTab l
 SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP001'),
@@ -392,6 +420,7 @@ SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = '
         ) AS TabTroncon
     )
 WHERE l.code_ligne = 'M001';
+COMMIT;
 
 UPDATE LigneTab l
 SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP004'),
@@ -407,7 +436,7 @@ SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = '
         ) AS TabTroncon
     )
 WHERE l.code_ligne = 'B001';
-
+COMMIT;
 
 UPDATE LigneTab l
 SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP002'),
@@ -423,6 +452,7 @@ SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = '
         ) AS TabTroncon
     )
 WHERE l.code_ligne = 'TR001';
+COMMIT;
 
 UPDATE LigneTab l
 SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS003'),
@@ -438,6 +468,7 @@ SET l.station_depart = (SELECT REF(s) FROM StationTab s WHERE s.code_station = '
         ) AS TabTroncon
     )
 WHERE l.code_ligne = 'TN001';
+COMMIT;
 
 -- update navette to add liste voyages :
 BEGIN
@@ -454,5 +485,6 @@ BEGIN
   END LOOP;
 END;
 /
+COMMIT;
 -- verification
 select * from NavetteTab;
