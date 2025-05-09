@@ -19,7 +19,7 @@ CREATE OR REPLACE TYPE BODY StationType AS
             -- Changement local
             SELF.nom_station := 'Univ';
 
-            -- Mise à jour persistante dans la table
+            -- Mise ï¿½ jour persistante dans la table
             UPDATE StationTab s
             SET VALUE(s) = SELF
             WHERE s.code_station = SELF.code_station;
@@ -35,7 +35,7 @@ CREATE OR REPLACE TYPE NbVoyagesVoyageursType AS OBJECT (
 );
 
 
--- Pré-déclarations nécessaires pour les références circulaires
+-- Prï¿½-dï¿½clarations nï¿½cessaires pour les rï¿½fï¿½rences circulaires
 CREATE OR REPLACE TYPE VoyageType;
 CREATE OR REPLACE TYPE NavetteType;
 CREATE OR REPLACE TYPE TronconType;
@@ -48,9 +48,9 @@ CREATE OR REPLACE TYPE TabVoyage AS TABLE OF REF VoyageType;
 CREATE OR REPLACE TYPE TabNavette AS TABLE OF REF NavetteType;
 CREATE OR REPLACE TYPE TabTroncon AS TABLE OF REF TronconType;
 CREATE OR REPLACE TYPE TabMoyenTransport AS TABLE OF REF MoyenTransportType;
+CREATE OR REPLACE TYPE TabLigne AS TABLE OF REF LigneType; -- Liste de lignes de ce moyen de transport
 
-
--- Définition des types de base
+-- Dï¿½finition des types de base
 CREATE OR REPLACE TYPE VoyageType AS OBJECT (
     numero_voyage VARCHAR(10),
     date_voyage DATE,
@@ -140,12 +140,12 @@ CREATE OR REPLACE TYPE BODY LigneType AS
         v_voy VoyageType;
     BEGIN
         FOR idx_nav IN 1 .. SELF.liste_navettes.COUNT LOOP
-            -- récupérer l'objet Navette via REF
+            -- rï¿½cupï¿½rer l'objet Navette via REF
             SELECT DEREF(SELF.liste_navettes(idx_nav)) INTO v_nav FROM DUAL;
 
             IF v_nav.liste_voyages IS NOT NULL THEN
                 FOR idx_voy IN 1 .. v_nav.liste_voyages.COUNT LOOP
-                    -- récupérer l'objet Voyage via REF
+                    -- rï¿½cupï¿½rer l'objet Voyage via REF
                     SELECT DEREF(v_nav.liste_voyages(idx_voy)) INTO v_voy FROM DUAL;
                     IF v_voy.date_voyage BETWEEN date_debut AND date_fin THEN
                         total := total + 1;
@@ -163,7 +163,7 @@ CREATE OR REPLACE TYPE MoyenTransportType AS OBJECT (
     heure_ouverture TIMESTAMP,
     heure_fermeture TIMESTAMP,
     nbVoyageursMoyen INT,
-
+    lignes TabLigne, -- Liste de lignes de ce moyen de transport
     MEMBER FUNCTION NbVoyagesEtVoyageurs(date_cible DATE) RETURN NbVoyagesVoyageursType
 ) NOT FINAL;
 
@@ -203,7 +203,7 @@ END;
 
 
 
--- Types dérivés de Station
+-- Types dï¿½rivï¿½s de Station
 CREATE OR REPLACE TYPE StationPrincipaleType UNDER StationType (
     listeMoyensTransport TabMoyenTransport
 );
