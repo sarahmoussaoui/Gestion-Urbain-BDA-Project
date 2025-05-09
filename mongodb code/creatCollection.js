@@ -5,17 +5,17 @@ db.createCollection("ligne");
 db.createCollection("troncon");
 db.createCollection("navette");
 db.createCollection("voyage");
-print("collection crees avec succès ")
+
 // 2. Insertion des moyens de transport
-db.moyen_transport.insert([
+/*db.moyen_transport.insert([
   {
     _id: "MET",
     heureOuverture: "05:30",
     heureFermeture: "23:30",
     nbVoyageursMoyen: 200,
     lignes: ["M001"],
-    stations_principales: ["SP001"], // Réf bidirectionnelle
-    stations_secondaires: ["SS001"]  // Réf bidirectionnelle
+    stations_principales: ["SP001"], 
+    stations_secondaires: ["SS001"]  
   }
 ]);
 
@@ -81,5 +81,4 @@ db.voyage.insert({
   sens: "aller",
   nbVoyageurs: 30,
   observation: "Panne"
-});
-
+});*/

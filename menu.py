@@ -3,9 +3,8 @@ from tkinter import ttk, messagebox
 import oracledb
 from PIL import Image, ImageTk
 
-# --- Oracle connection setup ---
 oracledb.init_oracle_client()
-dsn = oracledb.makedsn("localhost", 1521, service_name="xe")
+dsn = oracledb.makedsn("localhost", 1521, service_name="orclpdb")  # ou "orcl"
 conn = oracledb.connect(user="SQL3", password="BDA_2025", dsn=dsn)
 
 
