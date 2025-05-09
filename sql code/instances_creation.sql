@@ -42,7 +42,7 @@ COMMIT;
 -- Station Principale 1
 INSERT INTO StationTab VALUES (
     StationPrincipaleType(
-        'SP001', 'Haï El Badr', 3.080000, 36.750000,
+        'SP001', 'Haï¿½ El Badr', 3.080000, 36.750000,
         TabMoyenTransport(
             (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'M'),
             (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'B')
@@ -92,7 +92,7 @@ COMMIT;
 -- Station Secondaire 1
 INSERT INTO StationTab VALUES (
     StationSecondaireType(
-        'SS001', 'Les Fusillés', 3.090000, 36.755000,
+        'SS001', 'Les Fusillï¿½s', 3.090000, 36.755000,
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'M')
     )
 );
@@ -137,7 +137,7 @@ COMMIT;
 -- Station Secondaire 6
 INSERT INTO StationTab VALUES (
     StationSecondaireType(
-        'SS006', 'Sidi Bel Abbès', 3.180000, 36.690000,
+        'SS006', 'Sidi Bel Abbï¿½s', 3.180000, 36.690000,
         (SELECT REF(m) FROM MoyenTransportTab m WHERE m.code_transport = 'TN')
     )
 );
@@ -155,13 +155,13 @@ INSERT INTO LigneTab VALUES(
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S001'), 
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S010'),
         NULL,  -- Liste des navettes
-        NULL   -- Liste des tronçons
+        NULL   -- Liste des tronï¿½ons
     )
 );
 COMMIT;
 
 
--- Insertion de la ligne de métro
+-- Insertion de la ligne de mï¿½tro
 INSERT INTO LigneTab VALUES( 
     LigneType(
         'M001', 
@@ -169,7 +169,7 @@ INSERT INTO LigneTab VALUES(
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S001'), 
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S005'),
         NULL,  -- Liste des navettes
-        NULL   -- Liste des tronçons
+        NULL   -- Liste des tronï¿½ons
     )
 );
 COMMIT;
@@ -182,7 +182,7 @@ INSERT INTO LigneTab VALUES(
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S003'), 
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S008'),
         NULL,  -- Liste des navettes
-        NULL   -- Liste des tronçons
+        NULL   -- Liste des tronï¿½ons
     )
 );
 COMMIT;
@@ -195,17 +195,17 @@ INSERT INTO LigneTab VALUES(
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S002'), 
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'S009'),
         NULL,  -- Liste des navettes
-        NULL   -- Liste des tronçons
+        NULL   -- Liste des tronï¿½ons
     )
 );
 COMMIT;
 
--- insertion des tronçons
--- Tronçons pour le Métro
+-- insertion des tronï¿½ons
+-- Tronï¿½ons pour le Mï¿½tro
 INSERT INTO TronconTab VALUES (
     TronconType(101,
-        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP001'),  -- Haï El Badr
-        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS001'),  -- Les Fusillés
+        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP001'),  -- Haï¿½ El Badr
+        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS001'),  -- Les Fusillï¿½s
         1.50,
         (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'M001'),
         NULL
@@ -215,7 +215,7 @@ COMMIT;
 
 INSERT INTO TronconTab VALUES (
     TronconType(102,
-        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS001'),  -- Les Fusillés
+        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS001'),  -- Les Fusillï¿½s
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP002'),  -- El Harrach Centre
         1.80,
         (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'M001'),
@@ -235,7 +235,7 @@ INSERT INTO TronconTab VALUES (
 );
 COMMIT;
 
--- Tronçons pour le Tramway
+-- Tronï¿½ons pour le Tramway
 INSERT INTO TronconTab VALUES (
     TronconType(201,
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP002'),  -- El Harrach Centre
@@ -258,7 +258,7 @@ INSERT INTO TronconTab VALUES (
 );
 COMMIT;
 
--- Tronçons pour le Bus
+-- Tronï¿½ons pour le Bus
 INSERT INTO TronconTab VALUES (
     TronconType(301,
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SP004'),  -- Khelifa Boukhalfa
@@ -281,11 +281,11 @@ INSERT INTO TronconTab VALUES (
 );
 COMMIT;
 
--- Tronçons pour le Train
+-- Tronï¿½ons pour le Train
 INSERT INTO TronconTab VALUES (
     TronconType(401,
         (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS003'),  -- Bab Ezzouar
-        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS006'),  -- Sidi Bel Abbès
+        (SELECT REF(s) FROM StationTab s WHERE s.code_station = 'SS006'),  -- Sidi Bel Abbï¿½s
         6.50,
         (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TN001'),
         NULL
@@ -349,7 +349,7 @@ INSERT INTO VoyageTab VALUES (
     TO_DATE('2025-02-01 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 
     'Aller', 
     40, 
-    'Arrivé', 
+    'Arrivï¿½', 
     (SELECT REF(n) FROM NavetteTab n WHERE n.num_navette = 'N003')
 );
 COMMIT;
