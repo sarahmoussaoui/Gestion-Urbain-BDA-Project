@@ -129,29 +129,29 @@ db.voyage.updateMany(
 /****************requete 5************************/
 
 // Dictionnaire navette → ligne
-var navettesDict = {};
-db.navette.find().forEach(function(doc) {
-    navettesDict[doc._id] = doc.ligne_id;
+var dicoNavettes = {};
+db.navette.find().forEach(function(nav) {
+    dicoNavettes[nav._id] = nav.ligne_id;
 });
 
 // Fonction map
-var mapFunction = function() {
-    var ligne = navettesDict[this.navette_id] || "inconnu";
-    emit(ligne, 1);
+var fonctionMap = function() {
+    var idLigne = dicoNavettes[this.navette_id] || "inconnu";
+    emit(idLigne, 1);
 };
 
 // Fonction reduce
-var reduceFunction = function(key, values) {
-    return Array.sum(values);
+var fonctionReduce = function(cle, valeurs) {
+    return Array.sum(valeurs);
 };
 
 // Exécution MapReduce
 db.voyage.mapReduce(
-    mapFunction,
-    reduceFunction,
+    fonctionMap,
+    fonctionReduce,
     {
         out: { replace: "Ligne_Voyages" },
-        scope: { navettesDict: navettesDict }
+        scope: { dicoNavettes: dicoNavettes }
     }
 );
 
