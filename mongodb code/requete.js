@@ -62,32 +62,36 @@ db.voyage.aggregate([
   /*Récupérer dans une nouvelle collection Ligne-Voyages, les numéros de lignes et le nombre
 total de voyages effectués (par ligne). La collection devra être ordonnée par ordre
 décroissant du nombre de voyages. Afficher le contenu de la collection.*/
-db.navette.aggregate([
+db.voyage.aggregate([
   {
-    $unwind: "$voyages"
+    $lookup: {
+      from: "navette",
+      localField: "navette_id",
+      foreignField: "_id",
+      as: "navette"
+    }
+  },
+  {
+    $unwind: "$navette"
   },
   {
     $group: {
-      _id: "$ligne_id",
-      totalVoyages: { $sum: 1 }
+      _id: "$navette.ligne_id",  // Regroupe par ligne_id
+      nombre_voyages: { $sum: 1 } // Comptabilise les voyages
     }
   },
   {
-    $sort: { totalVoyages: -1 }
+    $sort: { nombre_voyages: -1 }  // Trie par nombre de voyages décroissant
   },
   {
-    $project: {
-      _id: 0,
-      numLigne: "$_id",
-      totalVoyages: 1
-    }
-  },
-  {
-    $out: "Ligne-Voyages"
+    $out: "Ligne-Voyages"  // Sauvegarde le résultat dans une nouvelle collection
   }
 ]);
-// pour verifier 
-db["Ligne-Voyages"].find().sort({ totalVoyages: -1 }).pretty()
+
+// Afficher le contenu de la nouvelle collection
+db["Ligne-Voyages"].find().pretty();
+
+
 /**************************************requete4********************/
 /*Augmenter de 100, le nombre de voyageurs sur tous les voyages effectués par métro avant
 la date du 15 janvier 2025.*/
@@ -124,35 +128,43 @@ db.voyage.updateMany(
   
 /****************requete 5************************/
 
+// Dictionnaire navette → ligne
 var navettesDict = {};
 db.navette.find().forEach(function(doc) {
-    navettesDict[doc._id] = doc.ligne;
+    navettesDict[doc._id] = doc.ligne_id;
 });
 
+// Fonction map
 var mapFunction = function() {
-    var ligne = navettesDict[this.navetteId] || "inconnu";
+    var ligne = navettesDict[this.navette_id] || "inconnu";
     emit(ligne, 1);
 };
 
+// Fonction reduce
 var reduceFunction = function(key, values) {
     return Array.sum(values);
 };
 
+// Exécution MapReduce
 db.voyage.mapReduce(
     mapFunction,
     reduceFunction,
     {
-        out: { replace: "Ligne_Voyages" }, 
+        out: { replace: "Ligne_Voyages" },
         scope: { navettesDict: navettesDict }
     }
 );
 
+// Affichage des résultats triés
 print("Résultats triés:");
-var results = db.Ligne_Voyage.find().sort({ value: -1 }).toArray(); 
+var results = db.Ligne_Voyages.find().sort({ value: -1 }).toArray();
 results.forEach(function(doc) {
     print("Ligne " + doc._id + ": " + doc.value + " voyages");
 });
-/***************************requete6******************/
+
+
+
+/***************************requete6**************************************************/
 // Étape 1 à 4 dans un pipeline
 let maxCount = db.voyage.aggregate([
   {

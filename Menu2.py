@@ -47,8 +47,40 @@ def requete2():
     return list(results)
 
 def requete3():
-    results = db["Ligne-Voyages"].find().sort("totalVoyages", -1)
-    return list(results)
+    try:
+        # Exécution de l'agrégation avec Lookup, Group et Sort
+        results = db.voyage.aggregate([
+            {
+                "$lookup": {
+                    "from": "navette",
+                    "localField": "navette_id",
+                    "foreignField": "_id",
+                    "as": "navette"
+                }
+            },
+            {
+                "$unwind": "$navette"
+            },
+            {
+                "$group": {
+                    "_id": "$navette.ligne_id",  # Regroupe par ligne_id
+                    "nombre_voyages": { "$sum": 1 }  # Comptabilise les voyages
+                }
+            },
+            {
+                "$sort": { "nombre_voyages": -1 }  # Trie par nombre de voyages décroissant
+            },
+            {
+                "$out": "Ligne-Voyages"  # Sauvegarde le résultat dans une nouvelle collection
+            }
+        ])
+        
+        # Récupérer les résultats de la collection Ligne-Voyages pour affichage
+        resultats = db["Ligne-Voyages"].find().sort("nombre_voyages", -1)
+        return list(resultats)
+    
+    except Exception as e:
+        return f"Erreur dans la requête 3: {str(e)}"
 
 # Nouvelle requête 4 : Augmenter de 100 voyageurs pour les voyages métro avant le 15 janvier 2025
 def requete4():
@@ -84,49 +116,46 @@ def requete4():
     except Exception as e:
         return f"Erreur dans la requête 4: {str(e)}"
 
-# Nouvelle requête 5 : MapReduce pour les voyages par ligne
+
 # Nouvelle requête 5 : MapReduce pour les voyages par ligne
 def requete5():
     try:
-        # Construire un dictionnaire des navettes avec leur ligne associée
-        navettesDict = {}
-        cursor = db.navette.find()
-        for doc in cursor:
-            navettesDict[doc["_id"]] = doc.get("ligne", "inconnu")
-        
-        # Enregistrer le dictionnaire navettesDict dans une collection temporaire
-        db.navette_mapreduce_dict.delete_many({})  # Effacer les anciennes données de la collection
-        db.navette_mapreduce_dict.insert_one({"navettesDict": navettesDict})
-
-        mapFunction = """
-        var navettesDict = db.navette_mapreduce_dict.findOne().navettesDict;
-        function() {
-            var ligne = navettesDict[this.navette_id] || "inconnu";
-            emit(ligne, 1);
+        # Étape 1 : construire navettesDict (navette_id → ligne_id)
+        navettesDict = {
+            doc["_id"]: doc["ligne_id"]
+            for doc in db.navette.find({}, {"_id": 1, "ligne_id": 1})
         }
-        """
-        
-        reduceFunction = """
-        function(key, values) {
-            return Array.sum(values);
-        }
-        """
 
-        # Lancer MapReduce
-        db.voyage.mapReduce(
-            mapFunction,
-            reduceFunction,
-            {
-                "out": {"replace": "Ligne_Voyages"}
+        # Étape 2 : définir les fonctions map et reduce en JavaScript (chaîne de caractères)
+        map_func = """
+            function () {
+                var ligne = navettesDict[this.navette_id] || "inconnu";
+                emit(ligne, 1);
             }
-        )
+        """
 
-        # Récupérer les résultats et les trier par nombre de voyages
-        results = db.Ligne_Voyages.find().sort({"value": -1})
+        reduce_func = """
+            function (key, values) {
+                return Array.sum(values);
+            }
+        """
+
+        # Étape 3 : exécuter la commande mapReduce via db.command()
+        db.command({
+            "mapReduce": "voyage",
+            "map": map_func,
+            "reduce": reduce_func,
+            "out": {"replace": "Ligne_Voyages"},
+            "scope": {"navettesDict": navettesDict}
+        })
+
+        # Étape 4 : récupérer les résultats triés
+        results = db["Ligne_Voyages"].find().sort("value", -1)
         return list(results)
 
     except Exception as e:
-        return f"Erreur dans la requête 5: {str(e)}"
+        return [ {"Erreur": str(e)} ]
+
 
 
 
