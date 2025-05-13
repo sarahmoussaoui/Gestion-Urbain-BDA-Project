@@ -49,7 +49,7 @@ CREATE OR REPLACE TYPE TabVoyage AS TABLE OF REF VoyageType;
 CREATE OR REPLACE TYPE TabNavette AS TABLE OF REF NavetteType;
 CREATE OR REPLACE TYPE TabTroncon AS TABLE OF REF TronconType;
 CREATE OR REPLACE TYPE TabMoyenTransport AS TABLE OF REF MoyenTransportType;
-
+CREATE OR REPLACE TYPE TabLigne AS TABLE OF REF LigneType; -- Liste de lignes de ce moyen de transport
 
 -- D�finition des types de base
 CREATE OR REPLACE TYPE VoyageType AS OBJECT (
@@ -164,7 +164,7 @@ CREATE OR REPLACE TYPE MoyenTransportType AS OBJECT (
     heure_ouverture TIMESTAMP,
     heure_fermeture TIMESTAMP,
     nbVoyageursMoyen INT,
-
+    lignes TabLigne, -- Liste de lignes de ce moyen de transport
     MEMBER FUNCTION NbVoyagesEtVoyageurs(date_cible DATE) RETURN NbVoyagesVoyageursType
 ) NOT FINAL;
 

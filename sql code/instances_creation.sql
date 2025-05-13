@@ -8,7 +8,10 @@ INSERT ALL
       'B',
       TO_TIMESTAMP('2025-01-01 06:00:00','YYYY-MM-DD HH24:MI:SS'),
       TO_TIMESTAMP('2025-01-01 22:00:00','YYYY-MM-DD HH24:MI:SS'),
-      100
+      100,
+      TabLigne(
+        (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'B%')
+      )
     )
   )
   INTO MoyenTransportTab VALUES(
@@ -16,7 +19,10 @@ INSERT ALL
       'M',
       TO_TIMESTAMP('2025-01-01 05:30:00','YYYY-MM-DD HH24:MI:SS'),
       TO_TIMESTAMP('2025-01-01 23:30:00','YYYY-MM-DD HH24:MI:SS'),
-      200
+      200,
+        TabLigne(
+            (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'M%')
+        )
     )
   )
   INTO MoyenTransportTab VALUES(
@@ -24,7 +30,10 @@ INSERT ALL
       'TR',
       TO_TIMESTAMP('2025-01-01 06:00:00','YYYY-MM-DD HH24:MI:SS'),
       TO_TIMESTAMP('2025-01-01 22:30:00','YYYY-MM-DD HH24:MI:SS'),
-      150
+      150,
+      TabLigne(
+            (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TR%')
+      )
     )
   )
   INTO MoyenTransportTab VALUES(
@@ -32,7 +41,10 @@ INSERT ALL
       'TN',
       TO_TIMESTAMP('2025-01-01 07:00:00','YYYY-MM-DD HH24:MI:SS'),
       TO_TIMESTAMP('2025-01-01 21:00:00','YYYY-MM-DD HH24:MI:SS'),
-      300
+      300,
+        TabLigne(
+                (SELECT REF(l) FROM LigneTab l WHERE l.code_ligne = 'TN%')
+        )
     )
   )
 SELECT * FROM dual; -- meaning run those four inserts one time each
